@@ -6,8 +6,8 @@ name: Autopoll herdr-webui formula
 # no PAT or external secret is needed.
 on:
   schedule:
-    # Mondays 06:20 UTC: off the top of the hour to dodge cron spikes.
-    - cron: "20 6 * * 1"
+    # Daily 06:20 UTC: off the top of the hour to dodge cron spikes.
+    - cron: "20 6 * * *"
   workflow_dispatch:
 
 permissions:
