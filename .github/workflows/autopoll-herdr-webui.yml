@@ -1,0 +1,46 @@
+name: Autopoll herdr-webui formula
+
+# Polls alecuba16/herdr-webui releases on a schedule and regenerates
+# Formula/herdr-webui.rb when a new version appears. Uses only this
+# repo's default GITHUB_TOKEN (explicit contents write permission), so
+# no PAT or external secret is needed.
+on:
+  schedule:
+    # Mondays 06:20 UTC: off the top of the hour to dodge cron spikes.
+    - cron: "20 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autopoll-herdr-webui
+  cancel-in-progress: false
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v7
+
+      - name: Regenerate formula from latest release
+        run: |
+          chmod +x scripts/generate_formula.sh
+          # The generator resolves the latest tag and fails loudly when a
+          # platform sha256 sidecar is missing, so a broken release never
+          # produces a broken formula.
+          ./scripts/generate_formula.sh
+
+      - name: Commit when changed
+        run: |
+          if git diff --quiet -- Formula/herdr-webui.rb; then
+            echo "formula is current, nothing to commit"
+            exit 0
+          fi
+          version="$(sed -n 's/^  version "\(.*\)"$/\1/p' Formula/herdr-webui.rb | head -1)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/herdr-webui.rb
+          git commit -m "herdr-webui ${version}"
+          git push
