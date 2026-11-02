@@ -92,23 +92,32 @@ class HerdrWebui < Formula
     end
   end
 
+  service do
+    run [opt_bin/"herdr-webui"]
+    keep_alive true
+    log_path var/"log/herdr-webui.log"
+    error_log_path var/"log/herdr-webui.err.log"
+  end
+
   def caveats
     <<~EOS
       The web UI serves embedded assets and starts a built-in terminal
       multiplexer backend by default; no other service is needed.
 
-      To run it as a user LaunchAgent (macOS) or systemd user service
-      (Linux), the install commands copy the brew-poured binaries into
-      ~/.local/bin and manage the service there:
+      Start it as a brew-managed background service (launches at login,
+      restarts on upgrade):
 
-        herdr-webui install-mac    # or install-linux
+        brew services start herdr-webui
 
-      After brew upgrade, refresh the service copy with:
+      Or run it in the foreground for a quick look:
 
-        herdr-webui update-mac      # or update-linux
+        herdr-webui --https off --backend-mode builtin
+        # open http://127.0.0.1:8787
 
-      Note: brew does not run the service. Without install-mac/install-linux
-      the binary runs standalone in the foreground.
+      Settings live in ~/.config/herdr-webui/webui-settings.json
+      (bind, TLS, credentials). The service block does not pass flags, so
+      configure the bind there if you need something other than the
+      default.
 
       Terminal UI companion: herdr-webui-tui --summary
     EOS
