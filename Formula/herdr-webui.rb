@@ -14,10 +14,11 @@ class HerdrWebui < Formula
       sha256 "c1c417f4d9fc4bed951a9580d646684d53ac740ddc9c688d0ed81c92cdc2879f"
 
       # The tarball wraps both binaries in one top-level directory named
-      # after the platform, so each arch block installs by full path.
+      # after the platform. Homebrew chdirs into a lone top-level directory
+      # before install runs, so the paths below are relative to it.
       def install
-        bin.install "herdr-webui-macos-aarch64/herdr-webui"
-        bin.install "herdr-webui-macos-aarch64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
     on_intel do
@@ -25,8 +26,8 @@ class HerdrWebui < Formula
       sha256 "75d3fbf57b434071c9c936273c61ec497b3f47067b8f718689ba63cd92176b30"
 
       def install
-        bin.install "herdr-webui-macos-x86_64/herdr-webui"
-        bin.install "herdr-webui-macos-x86_64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
   end
@@ -37,8 +38,8 @@ class HerdrWebui < Formula
       sha256 "024948fa6233fb49a1838e3a373466408ddcd47338e79b27dacc93c39efddf09"
 
       def install
-        bin.install "herdr-webui-linux-x86_64/herdr-webui"
-        bin.install "herdr-webui-linux-x86_64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
   end
@@ -54,7 +55,7 @@ class HerdrWebui < Formula
 
         herdr-webui install-mac    # or install-linux
 
-      After `brew upgrade`, refresh the service copy with:
+      After brew upgrade, refresh the service copy with:
 
         herdr-webui update-mac      # or update-linux
 
@@ -66,6 +67,6 @@ class HerdrWebui < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("\#{bin}/herdr-webui --version")
+    assert_match version.to_s, shell_output("#{bin}/herdr-webui --version")
   end
 end

@@ -13,10 +13,17 @@ REPO="alecuba16/herdr-webui"
 FORMULA_PATH="${1:-Formula/herdr-webui.rb}"
 API="https://api.github.com/repos/${REPO}/releases/latest"
 
+# Anonymous API calls work but rate-limit quickly; use the GITHUB_TOKEN
+# env var when it is present (the workflow passes github.token explicitly).
+AUTH=()
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  AUTH+=( -H "Authorization: Bearer ${GITHUB_TOKEN}" )
+fi
+
 if [[ -n "${2:-}" ]]; then
   TAG="$2"
 else
-  TAG="$(curl -fsSL -H "Accept: application/vnd.github+json" "$API" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -1)"
+  TAG="$(curl -fsSL -H "Accept: application/vnd.github+json" "${AUTH[@]}" "$API" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -1)"
 fi
 [[ -n "$TAG" ]] || { echo "could not resolve latest release tag" >&2; exit 1; }
 VERSION="${TAG#v}"
@@ -25,7 +32,7 @@ BASE_URL="https://github.com/${REPO}/releases/download/${TAG}"
 checksum() {
   local asset="$1"
   local sha_file="${asset}.sha256"
-  curl -fsSL "${BASE_URL}/${sha_file}" | awk '{print $1}'
+  curl -fsSL "${AUTH[@]}" "${BASE_URL}/${sha_file}" | awk '{print $1}'
 }
 
 AARCH64_SHA="$(checksum herdr-webui-macos-aarch64.tar.gz)"
@@ -54,10 +61,11 @@ class HerdrWebui < Formula
       sha256 "${AARCH64_SHA}"
 
       # The tarball wraps both binaries in one top-level directory named
-      # after the platform, so each arch block installs by full path.
+      # after the platform. Homebrew chdirs into a lone top-level directory
+      # before install runs, so the paths below are relative to it.
       def install
-        bin.install "herdr-webui-macos-aarch64/herdr-webui"
-        bin.install "herdr-webui-macos-aarch64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
     on_intel do
@@ -65,8 +73,8 @@ class HerdrWebui < Formula
       sha256 "${X86_64_MAC_SHA}"
 
       def install
-        bin.install "herdr-webui-macos-x86_64/herdr-webui"
-        bin.install "herdr-webui-macos-x86_64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
   end
@@ -77,8 +85,8 @@ class HerdrWebui < Formula
       sha256 "${LINUX_SHA}"
 
       def install
-        bin.install "herdr-webui-linux-x86_64/herdr-webui"
-        bin.install "herdr-webui-linux-x86_64/herdr-webui-tui"
+        bin.install "herdr-webui"
+        bin.install "herdr-webui-tui"
       end
     end
   end
@@ -94,7 +102,7 @@ class HerdrWebui < Formula
 
         herdr-webui install-mac    # or install-linux
 
-      After \`brew upgrade\`, refresh the service copy with:
+      After brew upgrade, refresh the service copy with:
 
         herdr-webui update-mac      # or update-linux
 
@@ -106,7 +114,7 @@ class HerdrWebui < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("\#{bin}/herdr-webui --version")
+    assert_match version.to_s, shell_output("#{bin}/herdr-webui --version")
   end
 end
 EOF

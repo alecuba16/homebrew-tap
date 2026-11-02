@@ -25,6 +25,8 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Regenerate formula from latest release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           chmod +x scripts/generate_formula.sh
           # The generator resolves the latest tag and fails loudly when a
