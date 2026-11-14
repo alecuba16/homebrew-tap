@@ -6,13 +6,13 @@
 class HerdrWebui < Formula
   desc "Web UI and terminal multiplexer for herdr workspaces"
   homepage "https://github.com/alecuba16/herdr-webui"
-  version "0.7.45"
+  version "0.7.46"
   license "AGPL-3.0-or-later"
 
   on_macos do
     on_arm do
-      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.45/herdr-webui-macos-aarch64.tar.gz"
-      sha256 "ba70cff83df76adfddb1ef4b5f69a287910ecca3135de83d1442e18ea323d1de"
+      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.46/herdr-webui-macos-aarch64.tar.gz"
+      sha256 "57663dd90a05feb5e00b04fc7bf5e43fd62724d0b975f1d41db8118c789702a1"
 
       # The tarball wraps both binaries in one top-level directory named
       # after the platform. Homebrew chdirs into a lone top-level directory
@@ -23,8 +23,8 @@ class HerdrWebui < Formula
       end
     end
     on_intel do
-      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.45/herdr-webui-macos-x86_64.tar.gz"
-      sha256 "c8ad5440c43bdfaf638798a8c7281e1e03f1e14d58601d54642d3fd4251cddb5"
+      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.46/herdr-webui-macos-x86_64.tar.gz"
+      sha256 "a0fe58de1395fb0c92ef92cfe91519d0b71b51f878bc5fb0ced16285c107c70f"
 
       def install
         bin.install "herdr-webui"
@@ -35,8 +35,8 @@ class HerdrWebui < Formula
 
   on_linux do
     on_intel do
-      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.45/herdr-webui-linux-x86_64.tar.gz"
-      sha256 "735cb2332693795b9de3e4bbaa356226f1e705c263360a529b75d3a176a2814b"
+      url "https://github.com/alecuba16/herdr-webui/releases/download/v0.7.46/herdr-webui-linux-x86_64.tar.gz"
+      sha256 "15391b190f4ae0257eff5d3f6ee0c2ea94fddf039249a2f36df8ee35c94097c6"
 
       def install
         bin.install "herdr-webui"
