@@ -1,13 +1,12 @@
 name: Autopoll herdr-webui formula
 
-# Polls alecuba16/herdr-webui releases on a schedule and regenerates
-# Formula/herdr-webui.rb when a new version appears. Uses only this
-# repo's default GITHUB_TOKEN (explicit contents write permission), so
-# no PAT or external secret is needed.
+# Manual regeneration of Formula/herdr-webui.rb from the latest
+# alecuba16/herdr-webui release. Releases themselves push the formula via
+# the publish-tap job in herdr-webui's webui-release.yml, so no schedule
+# runs here anymore; this workflow stays as an on-demand fallback.
+# Uses only this repo's default GITHUB_TOKEN (explicit contents write
+# permission), so no PAT or external secret is needed.
 on:
-  schedule:
-    # Daily 06:20 UTC: off the top of the hour to dodge cron spikes.
-    - cron: "20 6 * * *"
   workflow_dispatch:
 
 permissions:
