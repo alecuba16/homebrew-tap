@@ -85,7 +85,7 @@ class RustVmnetProxy < Formula
 
   service do
     run [opt_bin/"rust-vmnet-proxy", "--config", "\#{Dir.home}/.config/rust-vmnet-proxy/config.yaml"]
-    keep_alive false
+    keep_alive true
     log_path "\#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
     error_log_path "\#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
     process_type :background
