@@ -6,13 +6,13 @@
 class RustVmnetProxy < Formula
   desc "Rootless macOS proxy: direct SOCKS5 via bridged socket_vmnet plus supervised SSH tunnels"
   homepage "https://github.com/alecuba16/rust-vmnet-proxy"
-  version "0.2.5"
+  version "0.2.6"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.5/rust-vmnet-proxy-macos-aarch64.tar.gz"
-      sha256 "143651a41de042de7bc6602662bfb96bcb28d09757ab9aa64a132e7a835a735e"
+      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.6/rust-vmnet-proxy-macos-aarch64.tar.gz"
+      sha256 "b3592132f89525a3c8d59f097a273eb104b543b66782dec573839a6d986776c6"
 
       # Homebrew chdirs into the lone top-level directory in the tarball
       # before install runs.
@@ -21,8 +21,8 @@ class RustVmnetProxy < Formula
       end
     end
     on_intel do
-      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.5/rust-vmnet-proxy-macos-x86_64.tar.gz"
-      sha256 "ad18d8d184f23288acf73e217b9f4c3f7f14c82a22c7cb20012503f4235f9f28"
+      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.6/rust-vmnet-proxy-macos-x86_64.tar.gz"
+      sha256 "87034649e7a0bea104cae2f480d4ae13ced4021af42661c771f5a998eae0da94"
 
       def install
         bin.install "rust-vmnet-proxy"
