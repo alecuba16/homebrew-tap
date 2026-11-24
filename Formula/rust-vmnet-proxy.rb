@@ -40,10 +40,10 @@ class RustVmnetProxy < Formula
   end
 
   service do
-    run [opt_bin/"rust-vmnet-proxy", "--config", "\#{Dir.home}/.config/rust-vmnet-proxy/config.yaml"]
+    run [opt_bin/"rust-vmnet-proxy", "--config", "#{Dir.home}/.config/rust-vmnet-proxy/config.yaml"]
     keep_alive true
-    log_path "\#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
-    error_log_path "\#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
+    log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
+    error_log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
     process_type :background
   end
 end
