@@ -6,13 +6,13 @@
 class RustVmnetProxy < Formula
   desc "Rootless macOS proxy: direct SOCKS5 via bridged socket_vmnet plus supervised SSH tunnels"
   homepage "https://github.com/alecuba16/rust-vmnet-proxy"
-  version "0.2.3"
+  version "0.2.4"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.3/rust-vmnet-proxy-macos-aarch64.tar.gz"
-      sha256 "5db168d47edea61164fb092723b21f9795b9b132f6a2ce01bfed97998c474d9a"
+      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.4/rust-vmnet-proxy-macos-aarch64.tar.gz"
+      sha256 "6f1afa75f926777f3042bbd9ce05c96dfc91b781d9a389dcaa9e80248d1b7afa"
 
       # Homebrew chdirs into the lone top-level directory in the tarball
       # before install runs.
@@ -21,8 +21,8 @@ class RustVmnetProxy < Formula
       end
     end
     on_intel do
-      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.3/rust-vmnet-proxy-macos-x86_64.tar.gz"
-      sha256 "c033752ed2dbe8b6af120b600a2ac585403369a8b546614c5626890a5f00180f"
+      url "https://github.com/alecuba16/rust-vmnet-proxy/releases/download/v0.2.4/rust-vmnet-proxy-macos-x86_64.tar.gz"
+      sha256 "b3e7bb1d91653af9f235851909fb950218f94163a5dde56d9c2ac91a2ec1fe98"
 
       def install
         bin.install "rust-vmnet-proxy"
@@ -42,10 +42,8 @@ class RustVmnetProxy < Formula
   service do
     run [opt_bin/"rust-vmnet-proxy", "--config", "#{Dir.home}/.config/rust-vmnet-proxy/config.yaml"]
     keep_alive true
-    # the binary writes its own rotated rust-vmnet-proxy.log; launchd stderr
-    # only needs panics and pre-init failures, keep it out of the main log
-    log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/stderr.log"
-    error_log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/stderr.log"
+    log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
+    error_log_path "#{Dir.home}/Library/Logs/rust-vmnet-proxy/rust-vmnet-proxy.log"
     process_type :background
   end
 end
